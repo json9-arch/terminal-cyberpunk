@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER ART COMMISSIONS // TERMINAL v2.0</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@300;400;600;800&family=VT323&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jQuery for interactive jQuery demos -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-space': '#0A0012',
+                        'cyber-card': '#120524',
+                        'neon-magenta': '#FF007F',
+                        'electric-cyan': '#00F0FF',
+                        'acid-yellow': '#FFE600',
+                        'neon-green': '#00FF66',
+                        'terminal-dark': '#07020d'
+                    },
+                    fontFamily: {
+                        mono: ['Fira Code', 'monospace'],
+                        vt: ['VT323', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'glow-magenta': '0 0 15px rgba(255, 0, 127, 0.5), 0 0 30px rgba(255, 0, 127, 0.2)',
+                        'glow-cyan': '0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(0, 240, 255, 0.2)',
+                        'glow-yellow': '0 0 15px rgba(255, 230, 0, 0.5)',
+                        'glow-green': '0 0 15px rgba(0, 255, 102, 0.5)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Scanline Overlay Effect */
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.3)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Glassmorphism */
+        .cyber-glass {
+            background: rgba(18, 5, 36, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0012;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF007F;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00F0FF;
+        }
+
+        /* Neon Text Utilities */
+        .text-glow-magenta {
+            text-shadow: 0 0 8px #FF007F, 0 0 20px rgba(255, 0, 127, 0.6);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 8px #00F0FF, 0 0 20px rgba(0, 240, 255, 0.6);
+        }
+        .text-glow-yellow {
+            text-shadow: 0 0 8px #FFE600, 0 0 20px rgba(255, 230, 0, 0.6);
+        }
+
+        /* Blinking Cursor */
+        .blink {
+            animation: blinker 1s cubic-bezier(0.5, 0, 1, 1) infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        /* Code Block Styling */
+        pre code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        .code-keyword { color: #FF007F; font-weight: bold; }
+        .code-function { color: #00F0FF; }
+        .code-string { color: #FFE600; }
+        .code-comment { color: #6b7280; font-style: italic; }
+        .code-number { color: #00FF66; }
+    </style>
+</head>
+<body class="bg-deep-space text-gray-200 font-sans min-h-screen flex flex-col selection:bg-neon-magenta selection:text-white relative overflow-x-hidden">
+
+    <!-- Retro CRT Scanline & Grid Effect -->
+    <div class="pointer-events-none fixed inset-0 z-50 scanline opacity-30"></div>
+    <div class="pointer-events-none fixed inset-0 z-0 opacity-10 bg-[radial-gradient(#00F0FF_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 cyber-glass border-b border-electric-cyan/30 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo & Brand Identifier -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('inicio')">
+                    <div class="w-10 h-10 rounded-lg border border-electric-cyan bg-deep-space flex items-center justify-center shadow-glow-cyan text-electric-cyan">
+                        <i class="fa-solid fa-terminal text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-mono font-bold text-lg tracking-wider text-white flex items-center gap-2">
+                            CYBER<span class="text-neon-magenta">ART</span>
+                        </span>
+                        <span class="text-xs font-vt text-electric-cyan tracking-widest block -mt-1">v2.0 // COMMISSIONS</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden xl:flex items-center gap-1 font-mono text-xs">
+                    <button onclick="switchTab('inicio')" id="nav-inicio" class="nav-btn px-3 py-2 rounded-md transition flex items-center gap-1.5 text-electric-cyan border-b-2 border-electric-cyan bg-electric-cyan/10">
+                        <i class="fa-solid fa-house"></i> 01. INICIO
+                    </button>
+                    <button onclick="switchTab('modos')" id="nav-modos" class="nav-btn px-3 py-2 rounded-md transition flex items-center gap-1.5 text-gray-400 hover:text-white hover:bg-white/5">
+                        <i class="fa-solid fa-palette"></i> 02. ESTILOS
+                    </button>
+                    <button onclick="switchTab('js')" id="nav-js" class="nav-btn px-3 py-2 rounded-md transition flex items-center gap-1.5 text-gray-400 hover:text-white hover:bg-white/5">
+                        <i class="fa-brands fa-js text-yellow-400"></i> 03. JS VANILLA
+                    </button>
+                    <button onclick="switchTab('jquery')" id="nav-jquery" class="nav-btn px-3 py-2 rounded-md transition flex items-center gap-1.5 text-gray-400 hover:text-white hover:bg-white/5">
+                        <i class="fa-solid fa-code"></i> 04. JQUERY
+                    </button>
+                    <button onclick="switchTab('json')" id="nav-json" class="nav-btn px-3 py-2 rounded-md transition flex items-center gap-1.5 text-gray-400 hover:text-white hover:bg-white/5">
+                        <i class="fa-solid fa-database"></i> 05. JSON
+                    </button>
+                    <button onclick="switchTab('hosting')" id="nav-hosting" class="nav-btn px-3 py-2 rounded-md transition flex items-center gap-1.5 text-gray-400 hover:text-white hover:bg-white/5">
+                        <i class="fa-solid fa-server"></i> 06. HOSTING
+                    </button>
+                    <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn px-3 py-2 rounded-md transition flex items-center gap-1.5 text-acid-yellow border border-acid-yellow/40 hover:bg-acid-yellow/10">
+                        <i class="fa-solid fa-graduation-cap"></i> 07. CUESTIONARIO
+                    </button>
+                </nav>
+
+                <!-- Audio FX Toggler & Status Badge -->
+                <div class="flex items-center gap-3">
+                    <button id="sound-btn" onclick="toggleAudio()" class="px-3 py-1.5 rounded border border-electric-cyan/40 bg-cyber-card text-electric-cyan font-mono text-xs hover:border-electric-cyan flex items-center gap-2 transition" title="Activar/Desactivar Sonidos Retro">
+                        <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+                        <span class="hidden sm:inline">SFX: ON</span>
+                    </button>
+
+                    <!-- Mobile Menu Trigger Button -->
+                    <button onclick="toggleMobileMenu()" class="xl:hidden text-electric-cyan p-2 text-xl focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobile-menu" class="hidden xl:hidden border-t border-electric-cyan/30 bg-deep-space/95 px-4 pt-2 pb-4 space-y-1 font-mono text-sm">
+            <button onclick="switchTab('inicio'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded text-electric-cyan bg-electric-cyan/10">01. INICIO / MARCA</button>
+            <button onclick="switchTab('modos'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded text-gray-300 hover:text-white hover:bg-white/5">02. ESTILOS Y COTIZADOR</button>
+            <button onclick="switchTab('js'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded text-gray-300 hover:text-white hover:bg-white/5">03. JAVASCRIPT VANILLA</button>
+            <button onclick="switchTab('jquery'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded text-gray-300 hover:text-white hover:bg-white/5">04. JQUERY DOCS</button>
+            <button onclick="switchTab('json'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded text-gray-300 hover:text-white hover:bg-white/5">05. JSON SPEC</button>
+            <button onclick="switchTab('hosting'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded text-gray-300 hover:text-white hover:bg-white/5">06. HOSTING Y DOMINIOS</button>
+            <button onclick="switchTab('quiz'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded text-acid-yellow bg-acid-yellow/10">07. CUESTIONARIO WEB</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 01: INICIO Y MARCA (HERO)          -->
+        <!-- ========================================== -->
+        <section id="tab-inicio" class="tab-content space-y-12">
+            
+            <!-- Hero Terminal Banner -->
+            <div class="cyber-glass rounded-2xl p-6 sm:p-10 border border-electric-cyan/40 relative overflow-hidden shadow-glow-cyan/20">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-neon-magenta/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-electric-cyan/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- Status Tag -->
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon-green/50 bg-neon-green/10 text-neon-green font-mono text-xs font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-neon-green animate-ping"></span>
+                            [ STATUS: COMMISSIONS OPEN // SYSTEM READY ]
+                        </div>
+
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase font-sans">
+                            CYBER ART <br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-magenta via-electric-cyan to-acid-yellow text-glow-magenta">
+                                COMMISSIONS
+                            </span>
+                        </h1>
+
+                        <p class="text-gray-300 text-lg leading-relaxed max-w-2xl">
+                            Transformando ideas, avatares y personajes en <strong class="text-electric-cyan">arte digital vibrante</strong> con estética retro-futurista Synthwave/Cyberpunk. Explora nuestros modos gráficos o consulta el centro de documentación web.
+                        </p>
+
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchTab('modos')" class="px-6 py-3 rounded-lg bg-neon-magenta text-white font-mono font-bold hover:bg-neon-magenta/80 transition shadow-glow-magenta flex items-center gap-2">
+                                <i class="fa-solid fa-bolt"></i> SOLICITAR COMISIÓN
+                            </button>
+                            <button onclick="switchTab('js')" class="px-6 py-3 rounded-lg border border-electric-cyan/60 text-electric-cyan hover:bg-electric-cyan/10 font-mono font-semibold transition flex items-center gap-2">
+                                <i class="fa-solid fa-book"></i> INVESTIGACIÓN TECH
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Custom SVG Animated Brand Logo -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center p-4">
+                            <!-- SVG Cyber Emblem -->
+                            <svg class="w-full h-full drop-shadow-[0_0_20px_rgba(0,240,255,0.4)]" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="100" cy="100" r="90" stroke="#00F0FF" stroke-width="2" stroke-dasharray="8 4" class="animate-spin" style="animation-duration: 20s;"/>
+                                <polygon points="100,20 170,160 30,160" stroke="#FF007F" stroke-width="3" fill="rgba(255,0,127,0.05)"/>
+                                <polygon points="100,180 30,40 170,40" stroke="#00F0FF" stroke-width="2" fill="rgba(0,240,255,0.05)"/>
+                                <circle cx="100" cy="100" r="35" fill="#0A0012" stroke="#FFE600" stroke-width="3"/>
+                                <path d="M85 90 L115 90 L100 115 Z" fill="#FF007F"/>
+                                <text x="100" y="104" font-family="VT323" font-size="22" fill="#00F0FF" text-anchor="middle">CYBER</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Identity & Target Audience Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="cyber-glass p-6 rounded-xl border-l-4 border-neon-magenta hover:border-electric-cyan transition">
+                    <div class="text-neon-magenta text-3xl mb-3"><i class="fa-solid fa-fingerprint"></i></div>
+                    <h3 class="font-mono font-bold text-lg text-white mb-2">Propuesta de Valor</h3>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Ilustraciones con iluminación neón de alto impacto, acabados cel-shading de precisión y conceptos cyberpunk que hacen resaltar cualquier perfil, canal o proyecto indie.
+                    </p>
+                </div>
+
+                <div class="cyber-glass p-6 rounded-xl border-l-4 border-electric-cyan hover:border-acid-yellow transition">
+                    <div class="text-electric-cyan text-3xl mb-3"><i class="fa-solid fa-users"></i></div>
+                    <h3 class="font-mono font-bold text-lg text-white mb-2">Público Objetivo</h3>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Diseñado para Streamers (Twitch/YouTube), Content Creators, VTubers, Gamers, Desarrolladores de Videojuegos Indie y fans del anime retro-futurista.
+                    </p>
+                </div>
+
+                <div class="cyber-glass p-6 rounded-xl border-l-4 border-acid-yellow hover:border-neon-magenta transition">
+                    <div class="text-acid-yellow text-3xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="font-mono font-bold text-lg text-white mb-2">Garantía de Calidad</h3>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Flujo de trabajo transparente con entrega en ultra alta resolución (4K/300DPI), archivos PNG transparentes y hasta 2 rondas de revisión en etapa de boceto.
+                    </p>
+                </div>
+            </div>
+
+            <!-- System Color Palette & Psychology -->
+            <div class="cyber-glass rounded-xl p-6 sm:p-8 border border-electric-cyan/30">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fa-solid fa-swatchbook text-electric-cyan text-2xl"></i>
+                    <div>
+                        <h2 class="text-2xl font-mono font-bold text-white">SYSTEM COLOR PALETTE</h2>
+                        <p class="text-xs font-mono text-gray-400">Justificación gráfica basada en la psicología del color cyberpunk</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Deep Space -->
+                    <div class="bg-deep-space p-4 rounded-lg border border-gray-800 space-y-3">
+                        <div class="h-16 rounded bg-[#0A0012] border border-gray-700 flex items-center justify-center font-mono font-bold text-gray-400">
+                            #0A0012
+                        </div>
+                        <div>
+                            <h4 class="font-mono font-bold text-white">Deep Space</h4>
+                            <p class="text-xs text-electric-cyan">Fondo Infinito Dark</p>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            Representa el misterio, el cosmos nocturno y proporciona el contraste perfecto sin fatigar la vista para que resalten las luces neón.
+                        </p>
+                    </div>
+
+                    <!-- Neon Magenta -->
+                    <div class="bg-deep-space p-4 rounded-lg border border-gray-800 space-y-3">
+                        <div class="h-16 rounded bg-[#FF007F] shadow-glow-magenta flex items-center justify-center font-mono font-bold text-white">
+                            #FF007F
+                        </div>
+                        <div>
+                            <h4 class="font-mono font-bold text-white">Neon Magenta</h4>
+                            <p class="text-xs text-neon-magenta">Energía & Sintetizadores</p>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            Aporta pasión, energía juvenil, dinamismo synthwave y la vibra nostálgica de las luces de neón ochenteras.
+                        </p>
+                    </div>
+
+                    <!-- Electric Cyan -->
+                    <div class="bg-deep-space p-4 rounded-lg border border-gray-800 space-y-3">
+                        <div class="h-16 rounded bg-[#00F0FF] shadow-glow-cyan flex items-center justify-center font-mono font-bold text-black">
+                            #00F0FF
+                        </div>
+                        <div>
+                            <h4 class="font-mono font-bold text-white">Electric Cyan</h4>
+                            <p class="text-xs text-electric-cyan">Interfaz Cibernética</p>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            Simboliza alta tecnología, claridad digital, circuitos futuristas y la precisión en los detalles cibernéticos.
+                        </p>
+                    </div>
+
+                    <!-- Acid Yellow -->
+                    <div class="bg-deep-space p-4 rounded-lg border border-gray-800 space-y-3">
+                        <div class="h-16 rounded bg-[#FFE600] shadow-glow-yellow flex items-center justify-center font-mono font-bold text-black">
+                            #FFE600
+                        </div>
+                        <div>
+                            <h4 class="font-mono font-bold text-white">Acid Yellow</h4>
+                            <p class="text-xs text-acid-yellow">Alertas & Contrastes</p>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            Utilizado estratégicamente para generar alertas, focos de atención inmediata y acentos de máxima luminosidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules & TOS + Order Workflow Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- TOS -->
+                <div class="cyber-glass p-6 rounded-xl border border-neon-magenta/30 space-y-4">
+                    <h3 class="text-xl font-mono font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-scroll text-neon-magenta"></i> Reglas & Términos (TOS)
+                    </h3>
+                    
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <span class="text-neon-green font-mono font-bold"><i class="fa-solid fa-check"></i> LO QUE SÍ DIBUJO:</span>
+                            <p class="text-gray-300 ml-5">Personajes Originales (OCs), Fanart, Avatares, Retratos Estilizados, Estética Cyberpunk/Sci-Fi y Mecha ligero.</p>
+                        </div>
+                        <div>
+                            <span class="text-red-400 font-mono font-bold"><i class="fa-solid fa-xmark"></i> LO QUE NO DIBUJO:</span>
+                            <p class="text-gray-300 ml-5">Contenido explícito (NSFW explícito), discursos de odio o temáticas altamente sensibles/ofensivas.</p>
+                        </div>
+                        <div>
+                            <span class="text-electric-cyan font-mono font-bold"><i class="fa-solid fa-credit-card"></i> PAGO Y REVISIONES:</span>
+                            <p class="text-gray-300 ml-5">Pago previo del 50% para iniciar y 50% antes de la entrega final en alta resolución. Incluye 2 revisiones gratis en fase de boceto.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Process -->
+                <div class="cyber-glass p-6 rounded-xl border border-electric-cyan/30 space-y-4">
+                    <h3 class="text-xl font-mono font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-electric-cyan"></i> Proceso de Pedido (Paso a Paso)
+                    </h3>
+
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3 p-2 rounded bg-deep-space/60 border border-gray-800">
+                            <span class="w-6 h-6 rounded bg-neon-magenta font-mono text-xs font-bold flex items-center justify-center text-white shrink-0">1</span>
+                            <div class="text-xs">
+                                <strong class="text-white block font-mono">Elige tu Modo y Formato:</strong>
+                                Select Rubber Hose, Anime Clásico o Cyber Glow con el nivel de cuerpo deseado.
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-2 rounded bg-deep-space/60 border border-gray-800">
+                            <span class="w-6 h-6 rounded bg-electric-cyan font-mono text-xs font-bold flex items-center justify-center text-black shrink-0">2</span>
+                            <div class="text-xs">
+                                <strong class="text-white block font-mono">Envía tus Referencias:</strong>
+                                Genera el Ticket en el Cotizador y adjunta imágenes o descripción de tu personaje.
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-2 rounded bg-deep-space/60 border border-gray-800">
+                            <span class="w-6 h-6 rounded bg-acid-yellow font-mono text-xs font-bold flex items-center justify-center text-black shrink-0">3</span>
+                            <div class="text-xs">
+                                <strong class="text-white block font-mono">Revisa y Aprueba Boceto:</strong>
+                                Se te envía el boceto inicial para ajustar pose, expresiones y elementos.
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-2 rounded bg-deep-space/60 border border-gray-800">
+                            <span class="w-6 h-6 rounded bg-neon-green font-mono text-xs font-bold flex items-center justify-center text-black shrink-0">4</span>
+                            <div class="text-xs">
+                                <strong class="text-white block font-mono">Entrega Final HD:</strong>
+                                Recibes tu obra terminada en PNG 4K con y sin fondo para tus redes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 02: MODOS DE ARTE Y COTIZADOR     -->
+        <!-- ========================================== -->
+        <section id="tab-modos" class="tab-content hidden space-y-12">
+            
+            <div class="text-center space-y-3">
+                <h2 class="text-3xl sm:text-4xl font-mono font-bold text-white">MODOS DE ILUSTRACIÓN</h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm">
+                    Selecciona el acabado que mejor represente la personalidad de tu proyecto o personaje.
+                </p>
+            </div>
+
+            <!-- 3 Commission Modes Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Mode 01 -->
+                <div class="cyber-glass rounded-xl overflow-hidden border border-electric-cyan/30 hover:border-electric-cyan transition group flex flex-col justify-between">
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="px-2.5 py-1 rounded bg-electric-cyan/10 border border-electric-cyan text-electric-cyan font-mono text-xs font-bold">MODE 01</span>
+                            <span class="text-xs text-gray-400 font-mono">Desde $25 USD</span>
+                        </div>
+                        <h3 class="text-2xl font-mono font-bold text-white group-hover:text-electric-cyan transition">Rubber Hose</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Estilo caricatura clásica de los años 30 con trazos fluidos, divertidos y un toque retro vintage. Ideal para avatares en redes, stickers y emotes interactivos.
+                        </p>
+                        <ul class="text-xs text-gray-400 space-y-1 font-mono">
+                            <li><i class="fa-solid fa-check text-electric-cyan"></i> Trazos extremadamente dinámicos</li>
+                            <li><i class="fa-solid fa-check text-electric-cyan"></i> Paleta de color simplificada o monocroma</li>
+                            <li><i class="fa-solid fa-check text-electric-cyan"></i> Excelente para stickers</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-deep-space/80 border-t border-gray-800 text-center">
+                        <button onclick="selectModeInCalc('rubber')" class="w-full py-2 rounded bg-electric-cyan/20 border border-electric-cyan text-electric-cyan font-mono text-xs hover:bg-electric-cyan hover:text-black transition">
+                            SELECCIONAR EN COTIZADOR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mode 02 -->
+                <div class="cyber-glass rounded-xl overflow-hidden border border-neon-magenta/30 hover:border-neon-magenta transition group flex flex-col justify-between">
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="px-2.5 py-1 rounded bg-neon-magenta/10 border border-neon-magenta text-neon-magenta font-mono text-xs font-bold">MODE 02</span>
+                            <span class="text-xs text-gray-400 font-mono">Desde $40 USD</span>
+                        </div>
+                        <h3 class="text-2xl font-mono font-bold text-white group-hover:text-neon-magenta transition">Anime Clásico (90s)</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Trazos definidos con sombreado limpio tradicional estilo Cel-Shading retro de los años 90. Perfecto para hojas de personaje (Character Sheets) y foto de perfil.
+                        </p>
+                        <ul class="text-xs text-gray-400 space-y-1 font-mono">
+                            <li><i class="fa-solid fa-check text-neon-magenta"></i> Estilo nostálgico retro-anime</li>
+                            <li><i class="fa-solid fa-check text-neon-magenta"></i> Lineart nítido y sombras sólidas</li>
+                            <li><i class="fa-solid fa-check text-neon-magenta"></i> Ideal para Character Sheets</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-deep-space/80 border-t border-gray-800 text-center">
+                        <button onclick="selectModeInCalc('anime')" class="w-full py-2 rounded bg-neon-magenta/20 border border-neon-magenta text-neon-magenta font-mono text-xs hover:bg-neon-magenta hover:text-white transition">
+                            SELECCIONAR EN COTIZADOR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mode 03 -->
+                <div class="cyber-glass rounded-xl overflow-hidden border border-acid-yellow/30 hover:border-acid-yellow transition group flex flex-col justify-between">
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="px-2.5 py-1 rounded bg-acid-yellow/10 border border-acid-yellow text-acid-yellow font-mono text-xs font-bold">MODE 03</span>
+                            <span class="text-xs text-gray-400 font-mono">Desde $60 USD</span>
+                        </div>
+                        <h3 class="text-2xl font-mono font-bold text-white group-hover:text-acid-yellow transition">Cyber Glow</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Estilo avanzado con alto contraste, luces neón intensas, efectos de distorsión cromática y filtros futuristas. Ilustraciones premium de alto impacto visual.
+                        </p>
+                        <ul class="text-xs text-gray-400 space-y-1 font-mono">
+                            <li><i class="fa-solid fa-check text-acid-yellow"></i> Efectos de iluminación holográfica</li>
+                            <li><i class="fa-solid fa-check text-acid-yellow"></i> Sombreado complejo y brillo neón</li>
+                            <li><i class="fa-solid fa-check text-acid-yellow"></i> Máximo detalle y resolución</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-deep-space/80 border-t border-gray-800 text-center">
+                        <button onclick="selectModeInCalc('cyber')" class="w-full py-2 rounded bg-acid-yellow/20 border border-acid-yellow text-acid-yellow font-mono text-xs hover:bg-acid-yellow hover:text-black transition">
+                            SELECCIONAR EN COTIZADOR
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Price Calculator & Ticket Generator -->
+            <div id="calculator-section" class="cyber-glass rounded-2xl p-6 sm:p-8 border border-electric-cyan/40 shadow-glow-cyan/10">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fa-solid fa-calculator text-electric-cyan text-2xl"></i>
+                    <div>
+                        <h3 class="text-2xl font-mono font-bold text-white">COTIZADOR INTERACTIVO & TICKET</h3>
+                        <p class="text-xs font-mono text-gray-400">Calcula tu presupuesto estimado y genera tu orden de encargo en tiempo real</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Form Options -->
+                    <div class="lg:col-span-7 space-y-6">
+                        
+                        <!-- 1. Select Mode -->
+                        <div>
+                            <label class="block font-mono text-xs text-electric-cyan mb-2">1. SELECCIONA EL MODO DE ARTE:</label>
+                            <div class="grid grid-cols-3 gap-2 font-mono text-xs">
+                                <button type="button" onclick="updateCalc('mode', 'rubber')" id="btn-mode-rubber" class="calc-mode-btn p-3 rounded border border-electric-cyan bg-electric-cyan/20 text-white font-bold">Rubber Hose</button>
+                                <button type="button" onclick="updateCalc('mode', 'anime')" id="btn-mode-anime" class="calc-mode-btn p-3 rounded border border-gray-700 bg-deep-space text-gray-400">Anime 90s</button>
+                                <button type="button" onclick="updateCalc('mode', 'cyber')" id="btn-mode-cyber" class="calc-mode-btn p-3 rounded border border-gray-700 bg-deep-space text-gray-400">Cyber Glow</button>
+                            </div>
+                        </div>
+
+                        <!-- 2. Select Coverage / Format -->
+                        <div>
+                            <label class="block font-mono text-xs text-electric-cyan mb-2">2. NIVEL DE COBERURA (FORMATO):</label>
+                            <div class="grid grid-cols-3 gap-2 font-mono text-xs">
+                                <button type="button" onclick="updateCalc('format', 'headshot')" id="btn-format-headshot" class="calc-format-btn p-3 rounded border border-neon-magenta bg-neon-magenta/20 text-white font-bold">Headshot / Avatar</button>
+                                <button type="button" onclick="updateCalc('format', 'half')" id="btn-format-half" class="calc-format-btn p-3 rounded border border-gray-700 bg-deep-space text-gray-400">Half Body</button>
+                                <button type="button" onclick="updateCalc('format', 'full')" id="btn-format-full" class="calc-format-btn p-3 rounded border border-gray-700 bg-deep-space text-gray-400">Full Body</button>
+                            </div>
+                        </div>
+
+                        <!-- 3. Extras Checkboxes -->
+                        <div>
+                            <label class="block font-mono text-xs text-electric-cyan mb-2">3. ADICIONALES & EXTRAS:</label>
+                            <div class="space-y-2 font-mono text-xs">
+                                <label class="flex items-center gap-3 p-3 rounded bg-deep-space border border-gray-800 cursor-pointer hover:border-gray-700">
+                                    <input type="checkbox" id="extra-bg" onchange="calculateTotal()" class="w-4 h-4 accent-neon-magenta">
+                                    <span class="text-gray-200">Fondo Detallado Synthwave / Neón (+$25 USD)</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 rounded bg-deep-space border border-gray-800 cursor-pointer hover:border-gray-700">
+                                    <input type="checkbox" id="extra-char" onchange="calculateTotal()" class="w-4 h-4 accent-neon-magenta">
+                                    <span class="text-gray-200">Personaje Adicional en la escena (+70% del valor base)</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 rounded bg-deep-space border border-gray-800 cursor-pointer hover:border-gray-700">
+                                    <input type="checkbox" id="extra-commercial" onchange="calculateTotal()" class="w-4 h-4 accent-neon-magenta">
+                                    <span class="text-gray-200">Licencia Comercial / Merchandising (+$40 USD)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Client Nickname Input -->
+                        <div>
+                            <label class="block font-mono text-xs text-electric-cyan mb-1">NICKNAME / CONTACTO (OPCIONAL):</label>
+                            <input type="text" id="client-name" oninput="updateTicketText()" placeholder="Ej: CyberRunner#1337" class="w-full bg-deep-space border border-gray-700 rounded p-2.5 text-xs font-mono text-white focus:border-electric-cyan outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Live Ticket Output -->
+                    <div class="lg:col-span-5 flex flex-col justify-between bg-terminal-dark p-5 rounded-xl border border-electric-cyan/40 font-mono text-xs space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center border-b border-dashed border-gray-700 pb-2 mb-3">
+                                <span class="text-electric-cyan font-bold">[ TICKET DE ENCARGOS ]</span>
+                                <span class="text-gray-500" id="ticket-id">#CY-0001</span>
+                            </div>
+
+                            <pre id="ticket-preview" class="text-gray-300 leading-relaxed whitespace-pre-wrap font-vt text-sm text-green-400">
+[ CYBER ART TICKET ]
+• Cliente: Anon
+• Modo: Rubber Hose
+• Cobertura: Headshot
+• Extras: Ninguno
+• Total Estimado: $25 USD
+• Estado: Esperando Confirmación
+                            </pre>
+                        </div>
+
+                        <div class="pt-4 border-t border-dashed border-gray-700 space-y-3">
+                            <div class="flex justify-between items-center text-base font-bold text-white">
+                                <span>TOTAL ESTIMADO:</span>
+                                <span id="total-price" class="text-2xl text-acid-yellow text-glow-yellow">$25 USD</span>
+                            </div>
+
+                            <button onclick="copyTicket()" class="w-full py-3 rounded bg-neon-magenta hover:bg-neon-magenta/80 text-white font-bold transition flex items-center justify-center gap-2 shadow-glow-magenta">
+                                <i class="fa-solid fa-copy"></i> COPIAR TICKET PARA DISCORD / EMAIL
+                            </button>
+                            <div id="copy-notification" class="hidden text-center text-neon-green text-xs">
+                                <i class="fa-solid fa-circle-check"></i> ¡Ticket copiado al portapapeles!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 03: INVESTIGACIÓN JS VANILLA       -->
+        <!-- ========================================== -->
+        <section id="tab-js" class="tab-content hidden space-y-10">
+            
+            <div class="cyber-glass p-6 sm:p-8 rounded-xl border border-yellow-400/30 space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded bg-yellow-400/20 border border-yellow-400 flex items-center justify-center text-yellow-400 text-3xl font-bold">
+                        <i class="fa-brands fa-js"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-mono font-bold text-white">JavaScript (JS Vanilla)</h2>
+                        <p class="text-xs font-mono text-gray-400">El lenguaje de programación estándar del desarrollo web cliente</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan">¿Qué es JavaScript y para qué se usa?</h3>
+                    <p>
+                        <strong>JavaScript (JS Vanilla)</strong> es un lenguaje de programación interpretado, orientado a objetos y de alto nivel. Se ejecuta directamente en el navegador del cliente sin necesidad de librerías externas. Es el núcleo dinámico de la Web moderna.
+                    </p>
+
+                    <!-- HTML vs CSS vs JS Box -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                        <div class="p-4 rounded bg-deep-space border border-red-500/30">
+                            <h4 class="font-mono font-bold text-red-400 mb-1"><i class="fa-code fa-solid"></i> HTML (Estructura)</h4>
+                            <p class="text-xs text-gray-400">Define el esqueleto, los elementos gráficos y la semántica del documento (botones, capas, textos).</p>
+                        </div>
+                        <div class="p-4 rounded bg-deep-space border border-blue-500/30">
+                            <h4 class="font-mono font-bold text-blue-400 mb-1"><i class="fa-paintbrush fa-solid"></i> CSS (Estilo)</h4>
+                            <p class="text-xs text-gray-400">Controla la presentación visual, colores neón, diseños adaptativos, fuentes y animaciones estéticas.</p>
+                        </div>
+                        <div class="p-4 rounded bg-deep-space border border-yellow-400/30">
+                            <h4 class="font-mono font-bold text-yellow-400 mb-1"><i class="fa-bolt fa-solid"></i> JS (Comportamiento)</h4>
+                            <p class="text-xs text-gray-400">Agrega interactividad dinámica, cálculo de tarifas, manejo de eventos y lógica del terminal.</p>
+                        </div>
+                    </div>
+
+                    <!-- Key JS Concepts -->
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan pt-2">Conceptos Clave de JavaScript</h3>
+                    <ul class="list-disc list-inside space-y-2 text-xs font-mono text-gray-300">
+                        <li><strong class="text-white">Variables:</strong> Espacios de memoria declarados mediante <code class="text-neon-magenta">let</code> (reasignable) o <code class="text-electric-cyan">const</code> (constante inmutable).</li>
+                        <li><strong class="text-white">Funciones:</strong> Bloques de código reutilizables (<code class="text-acid-yellow">function miFuncion() {}</code> o flecha <code class="text-acid-yellow">() =&gt; {}</code>) que ejecutan una tarea al ser invocados.</li>
+                        <li><strong class="text-white">Eventos:</strong> Interceptores de acciones del usuario como <code class="text-neon-green">click</code>, <code class="text-neon-green">hover/mouseenter</code>, o <code class="text-neon-green">input</code>.</li>
+                    </ul>
+                </div>
+
+                <!-- Code Sample + Interactive Live Demo -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+                    <!-- Code snippet -->
+                    <div class="bg-terminal-dark p-4 rounded-lg border border-gray-800 space-y-2">
+                        <span class="text-xs font-mono text-gray-500 block border-b border-gray-800 pb-1">// Ejemplo de Código JS Vanilla</span>
+                        <pre class="text-xs overflow-x-auto"><code><span class="code-comment">// Declaración de variables y selector</span>
+<span class="code-keyword">const</span> btn = document.<span class="code-function">getElementById</span>(<span class="code-string">'glow-btn'</span>);
+<span class="code-keyword">let</span> clickCount = <span class="code-number">0</span>;
+
+<span class="code-comment">// Listener de Evento Click</span>
+btn.<span class="code-function">addEventListener</span>(<span class="code-string">'click'</span>, <span class="code-keyword">function</span>() {
+    clickCount++;
+    <span class="code-keyword">const</span> display = document.<span class="code-function">getElementById</span>(<span class="code-string">'count-out'</span>);
+    display.textContent = <span class="code-string">`Cargas Neón: <span class="code-number">${clickCount}</span>`</span>;
+});</code></pre>
+                    </div>
+
+                    <!-- Live Demo Box -->
+                    <div class="cyber-glass p-6 rounded-lg border border-electric-cyan/40 flex flex-col justify-center items-center text-center space-y-4">
+                        <h4 class="font-mono text-xs text-electric-cyan font-bold">[ DEMO EN VIVO - JS VANILLA ]</h4>
+                        <div id="js-demo-counter" class="text-2xl font-mono text-acid-yellow text-glow-yellow">
+                            Cargas Neón: 0
+                        </div>
+                        <button id="js-demo-btn" onclick="runJsDemo()" class="px-5 py-2.5 rounded bg-electric-cyan text-black font-mono font-bold text-xs hover:bg-electric-cyan/80 transition">
+                            ACTIVAR PULSO DE ENERGÍA
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resources -->
+                <div class="border-t border-gray-800 pt-4 text-xs text-gray-400 font-mono">
+                    <strong class="text-gray-300">Fuentes & Bibliografía:</strong>
+                    <a href="https://developer.mozilla.org/es/docs/Web/JavaScript" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">MDN Web Docs JS</a> |
+                    <a href="https://www.w3schools.com/js/" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">W3Schools JS Tutorial</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 04: INVESTIGACIÓN JQUERY           -->
+        <!-- ========================================== -->
+        <section id="tab-jquery" class="tab-content hidden space-y-10">
+            
+            <div class="cyber-glass p-6 sm:p-8 rounded-xl border border-electric-cyan/30 space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded bg-electric-cyan/20 border border-electric-cyan flex items-center justify-center text-electric-cyan text-3xl font-bold">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-mono font-bold text-white">jQuery</h2>
+                        <p class="text-xs font-mono text-gray-400">Librería rápida y concisa para la manipulación del DOM y efectos visuales</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan">¿Qué es jQuery y por qué nació?</h3>
+                    <p>
+                        <strong>jQuery</strong> nació en 2006 (creada por John Resig) con el lema <em>"Write less, do more"</em>. Surgió para resolver las incompatibilidades dramáticas entre navegadores de la época (Internet Explorer vs Firefox/Chrome) y simplificar la sintaxis compleja de selección y manipulación del DOM en JS Vanilla.
+                    </p>
+
+                    <!-- Sintaxis basica $ -->
+                    <div class="p-4 rounded bg-deep-space border border-electric-cyan/30 font-mono text-xs space-y-2">
+                        <span class="text-electric-cyan font-bold block">SINTAXIS BÁSICA DE JQUERY:</span>
+                        <code class="text-white block">$(&quot;selector&quot;).accion();</code>
+                        <p class="text-gray-400 text-xs">El símbolo <code class="text-acid-yellow">$</code> es un alias para la función jQuery. Selecciona elementos HTML y les aplica métodos inmediatamente.</p>
+                    </div>
+
+                    <!-- Ventajas y Desventajas Matrix -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div class="p-4 rounded bg-deep-space border border-neon-green/30 space-y-2">
+                            <h4 class="font-mono font-bold text-neon-green text-xs"><i class="fa-circle-plus fa-solid"></i> VENTAJAS DE JQUERY</h4>
+                            <ul class="text-xs text-gray-300 space-y-1 list-disc list-inside">
+                                <li>Sintaxis sumamente corta y directa.</li>
+                                <li>Animaciones predefinidas simples (<code class="text-electric-cyan">fadeIn</code>, <code class="text-electric-cyan">slideToggle</code>).</li>
+                                <li>Soporte histórico con miles de plugins legados.</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 rounded bg-deep-space border border-red-400/30 space-y-2">
+                            <h4 class="font-mono font-bold text-red-400 text-xs"><i class="fa-circle-minus fa-solid"></i> DESVENTAJAS HOY EN DÍA</h4>
+                            <ul class="text-xs text-gray-300 space-y-1 list-disc list-inside">
+                                <li>Peso extra innecesario (~30KB) si JS Vanilla ya lo hace nativamente.</li>
+                                <li>Rendimiento inferior en iteraciones masivas respecto a <code class="text-electric-cyan">fetch()</code> o <code class="text-electric-cyan">querySelectorAll</code>.</li>
+                                <li>Reemplazado en desarrollo moderno por React, Vue y JS ES6+.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive jQuery Live Effect Demos -->
+                <div class="cyber-glass p-6 rounded-lg border border-neon-magenta/40 space-y-4">
+                    <h4 class="font-mono text-xs text-neon-magenta font-bold">[ DEMO INTERACTIVA EN VIVO - EFECTOS JQUERY ]</h4>
+                    <p class="text-xs text-gray-300">Haz clic en los botones para probar animaciones directas ejecutadas con la librería jQuery cargada:</p>
+
+                    <div class="flex flex-wrap gap-2">
+                        <button id="jq-fade-btn" class="px-3 py-2 rounded bg-neon-magenta/20 border border-neon-magenta text-neon-magenta font-mono text-xs hover:bg-neon-magenta hover:text-white transition">
+                            $.fadeIn() / $.fadeOut()
+                        </button>
+                        <button id="jq-slide-btn" class="px-3 py-2 rounded bg-electric-cyan/20 border border-electric-cyan text-electric-cyan font-mono text-xs hover:bg-electric-cyan hover:text-black transition">
+                            $.slideToggle()
+                        </button>
+                    </div>
+
+                    <!-- Target Element for jQuery Animation -->
+                    <div id="jq-target-box" class="p-6 rounded bg-deep-space border border-acid-yellow text-center space-y-2">
+                        <div class="text-acid-yellow font-mono text-sm font-bold"><i class="fa-solid fa-microchip"></i> COMPONENTE CIBERNÉTICO MOSTRADO</div>
+                        <p class="text-xs text-gray-400">Esta caja reacciona en tiempo real a los métodos de animación jQuery interceptados.</p>
+                    </div>
+                </div>
+
+                <!-- Comparison Table JS Vanilla vs jQuery -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan">Cuadro Comparativo: JS Vanilla vs. jQuery</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left font-mono text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-deep-space border-b border-gray-700 text-electric-cyan">
+                                    <th class="p-3">Acción / Tarea</th>
+                                    <th class="p-3 text-yellow-400">JavaScript Vanilla (ES6+)</th>
+                                    <th class="p-3 text-neon-magenta">jQuery</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800 text-gray-300">
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Seleccionar Elemento</td>
+                                    <td class="p-3"><code>document.querySelector('.clase')</code></td>
+                                    <td class="p-3"><code>$('.clase')</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Evento Click</td>
+                                    <td class="p-3"><code>elem.addEventListener('click', fn)</code></td>
+                                    <td class="p-3"><code>elem.click(fn)</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Ocultar Elemento</td>
+                                    <td class="p-3"><code>elem.style.display = 'none'</code></td>
+                                    <td class="p-3"><code>elem.hide()</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Petición HTTP / AJAX</td>
+                                    <td class="p-3"><code>fetch(url).then(res => res.json())</code></td>
+                                    <td class="p-3"><code>$.getJSON(url, callback)</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Resources -->
+                <div class="border-t border-gray-800 pt-4 text-xs text-gray-400 font-mono">
+                    <strong class="text-gray-300">Fuentes & Bibliografía:</strong>
+                    <a href="https://jquery.com/" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">Official jQuery Docs</a> |
+                    <a href="https://youmightnotneedjquery.com/" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">You Might Not Need jQuery</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 05: INVESTIGACIÓN JSON             -->
+        <!-- ========================================== -->
+        <section id="tab-json" class="tab-content hidden space-y-10">
+            
+            <div class="cyber-glass p-6 sm:p-8 rounded-xl border border-neon-magenta/30 space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded bg-neon-magenta/20 border border-neon-magenta flex items-center justify-center text-neon-magenta text-3xl font-bold">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-mono font-bold text-white">JSON (JavaScript Object Notation)</h2>
+                        <p class="text-xs font-mono text-gray-400">El estándar universal liviano para el intercambio de datos estructurados</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan">¿Qué es JSON y por qué es el estándar web?</h3>
+                    <p>
+                        <strong>JSON</strong> es un formato de texto independiente del lenguaje utilizado para transmitir y estructurar datos entre clientes (navegadores) y servidores web o APIs RESTful. Es más liviano y fácil de leer para humanos que XML.
+                    </p>
+
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan pt-2">Estructura Básica de Datos</h3>
+                    <p class="text-xs">
+                        JSON admite tipos de datos primarios: <code class="text-neon-magenta">String</code> (siempre entre comillas dobles), <code class="text-electric-cyan">Number</code>, <code class="text-acid-yellow">Boolean</code>, <code class="text-gray-400">null</code>, <code class="text-neon-green">Array []</code> y <code class="text-white">Object {}</code>.
+                    </p>
+
+                    <!-- Visual Comparison: JS Object vs JSON String -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div class="bg-terminal-dark p-4 rounded border border-gray-800 space-y-2">
+                            <span class="text-xs font-mono text-yellow-400 font-bold block">// Objeto Literal en JavaScript</span>
+                            <pre class="text-xs font-mono text-gray-300"><code><span class="code-keyword">const</span> comision = {
+    id: <span class="code-number">101</span>,
+    modo: <span class="code-string">"Cyber Glow"</span>,
+    activo: <span class="code-keyword">true</span>,
+    precio: <span class="code-number">85</span>
+};</code></pre>
+                        </div>
+
+                        <div class="bg-terminal-dark p-4 rounded border border-gray-800 space-y-2">
+                            <span class="text-xs font-mono text-neon-magenta font-bold block">// Formato Formateado JSON (String)</span>
+                            <pre class="text-xs font-mono text-gray-300"><code>{
+    <span class="code-string">"id"</span>: <span class="code-number">101</span>,
+    <span class="code-string">"modo"</span>: <span class="code-string">"Cyber Glow"</span>,
+    <span class="code-string">"activo"</span>: <span class="code-keyword">true</span>,
+    <span class="code-string">"precio"</span>: <span class="code-number">85</span>
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <p class="text-xs">
+                        <strong>Comunicación Cliente-Servidor:</strong> En JavaScript se utiliza <code class="text-electric-cyan">JSON.stringify()</code> para convertir objetos JS en cadenas JSON al enviar datos, y <code class="text-electric-cyan">JSON.parse()</code> para reconvertir cadenas JSON recibidas en objetos manipulables.
+                    </p>
+                </div>
+
+                <!-- Interactive JSON Formatter / Validator Tool -->
+                <div class="cyber-glass p-6 rounded-lg border border-electric-cyan/40 space-y-4">
+                    <h4 class="font-mono text-xs text-electric-cyan font-bold">[ HERRAMIENTA INTERACTIVA - VALIDADOR & PARSER JSON ]</h4>
+                    <p class="text-xs text-gray-300">Prueba parsear la carga util (payload) de una comisión de arte en tiempo real:</p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Entrada Cadenas JSON Raw:</label>
+                            <textarea id="json-input" rows="6" class="w-full bg-deep-space border border-gray-700 rounded p-3 text-xs font-mono text-green-400 focus:border-electric-cyan outline-none">{
+  "cliente": "Viper_99",
+  "estilo": "Cyber Glow",
+  "cobertura": "Full Body",
+  "extras": ["Fondo Neón", "Licencia Comercial"]
+}</textarea>
+                            <button onclick="parseJsonDemo()" class="mt-2 px-4 py-2 bg-electric-cyan text-black font-mono font-bold text-xs rounded hover:bg-electric-cyan/80 transition">
+                                VALIDAR Y PARSEAR JSON
+                            </button>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-mono text-gray-400 mb-1">Resultado de Inspección en Memoria JS:</label>
+                            <div id="json-output" class="p-3 bg-terminal-dark border border-gray-800 rounded min-h-[140px] font-mono text-xs text-gray-300">
+                                <span class="text-gray-500">// Presiona 'Validar' para ver las propiedades en objeto JS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources -->
+                <div class="border-t border-gray-800 pt-4 text-xs text-gray-400 font-mono">
+                    <strong class="text-gray-300">Fuentes & Bibliografía:</strong>
+                    <a href="https://www.json.org/json-es.html" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">JSON.org Oficial</a> |
+                    <a href="https://developer.mozilla.org/es/docs/Learn/JavaScript/Objects/JSON" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">MDN Guía JSON</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 06: INVESTIGACIÓN HOSTING & DOMINIOS -->
+        <!-- ========================================== -->
+        <section id="tab-hosting" class="tab-content hidden space-y-10">
+            
+            <div class="cyber-glass p-6 sm:p-8 rounded-xl border border-acid-yellow/30 space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded bg-acid-yellow/20 border border-acid-yellow flex items-center justify-center text-acid-yellow text-3xl font-bold">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-mono font-bold text-white">Web Hosting & Dominios</h2>
+                        <p class="text-xs font-mono text-gray-400">Infraestructura y despliegue global para proyectos web en la nube</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan">¿Cómo se pone una página web en Internet?</h3>
+                    <p>
+                        Para hacer accesible un sitio web a nivel mundial, se requiere almacenar los archivos (HTML, CSS, JS, imágenes) en un servidor conectado 24/7 (<strong>Web Hosting</strong>) y asociarlo a un nombre recordable (<strong>Dominio Web</strong>).
+                    </p>
+
+                    <!-- Types of Hosting Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                        <div class="p-4 rounded bg-deep-space border border-gray-800 space-y-1">
+                            <h4 class="font-mono font-bold text-white text-xs">Hosting Compartido</h4>
+                            <p class="text-xs text-gray-400">Varios sitios comparten el mismo servidor y recursos CPU/RAM. Económico pero limitado.</p>
+                        </div>
+                        <div class="p-4 rounded bg-deep-space border border-gray-800 space-y-1">
+                            <h4 class="font-mono font-bold text-white text-xs">Servidores VPS / Nube</h4>
+                            <p class="text-xs text-gray-400">Recursos virtuales dedicados y escalables (AWS, Google Cloud, DigitalOcean).</p>
+                        </div>
+                        <div class="p-4 rounded bg-deep-space border border-electric-cyan/40 space-y-1">
+                            <h4 class="font-mono font-bold text-electric-cyan text-xs">Vercel (Jamstack Static)</h4>
+                            <p class="text-xs text-gray-400">Plataforma cloud optimizada para frameworks y sitios estáticos con despliegue CI/CD automático desde GitHub.</p>
+                        </div>
+                    </div>
+
+                    <!-- Domain & TLD concepts -->
+                    <h3 class="text-lg font-mono font-bold text-electric-cyan pt-2">Anatomía de un Nombre de Dominio</h3>
+                    <div class="p-4 rounded bg-deep-space border border-gray-800 font-mono text-xs space-y-2">
+                        <div class="text-center text-base font-bold text-white">
+                            <span class="text-neon-magenta">app.</span><span class="text-electric-cyan">cyberartcomisiones</span><span class="text-acid-yellow">.com</span>
+                        </div>
+                        <div class="grid grid-cols-3 text-center text-xs text-gray-400 border-t border-gray-800 pt-2">
+                            <span>Subdominio</span>
+                            <span>Nombre Raíz (Domain Name)</span>
+                            <span>TLD (Top Level Domain)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive DNS Propagation Flow Visualizer -->
+                <div class="cyber-glass p-6 rounded-lg border border-acid-yellow/40 space-y-4">
+                    <h4 class="font-mono text-xs text-acid-yellow font-bold">[ DIAGRAMA INTERACTIVO - FLUJO DE PROPAGACIÓN Y RESOLUCIÓN DNS ]</h4>
+                    <p class="text-xs text-gray-300">Pasa el cursor o haz clic en los pasos para simular cómo un navegador resuelve el dominio web hasta el servidor Vercel:</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 font-mono text-xs text-center">
+                        <div onclick="stepDns(1)" id="dns-step-1" class="p-3 rounded bg-deep-space border border-electric-cyan cursor-pointer hover:bg-electric-cyan/10">
+                            <i class="fa-solid fa-laptop text-electric-cyan text-lg block mb-1"></i>
+                            1. Cliente Navegador
+                        </div>
+                        <div onclick="stepDns(2)" id="dns-step-2" class="p-3 rounded bg-deep-space border border-gray-800 cursor-pointer hover:bg-electric-cyan/10">
+                            <i class="fa-solid fa-network-wired text-neon-magenta text-lg block mb-1"></i>
+                            2. Resolver DNS ISP
+                        </div>
+                        <div onclick="stepDns(3)" id="dns-step-3" class="p-3 rounded bg-deep-space border border-gray-800 cursor-pointer hover:bg-electric-cyan/10">
+                            <i class="fa-solid fa-sitemap text-acid-yellow text-lg block mb-1"></i>
+                            3. Name Servers (NS)
+                        </div>
+                        <div onclick="stepDns(4)" id="dns-step-4" class="p-3 rounded bg-deep-space border border-gray-800 cursor-pointer hover:bg-electric-cyan/10">
+                            <i class="fa-solid fa-cloud text-neon-green text-lg block mb-1"></i>
+                            4. Servidor Vercel IP
+                        </div>
+                    </div>
+
+                    <div id="dns-explanation" class="p-3 rounded bg-terminal-dark border border-gray-800 font-mono text-xs text-green-400">
+                        <strong>Paso 1:</strong> El usuario escribe 'cyberartcomisiones.vercel.app' en la barra de direcciones del navegador.
+                    </div>
+                </div>
+
+                <!-- Deployment Steps Summary -->
+                <div class="p-4 rounded bg-deep-space border border-neon-green/30 space-y-2">
+                    <h4 class="font-mono font-bold text-neon-green text-xs"><i class="fa-solid fa-rocket"></i> FLUJO DE DESPLIEGUE EN VERCEL VIA GITHUB</h4>
+                    <ol class="text-xs text-gray-300 space-y-1 list-decimal list-inside font-mono">
+                        <li>Subir el código fuente del proyecto a un repositorio público en <strong>GitHub</strong>.</li>
+                        <li>Iniciar sesión en <strong>Vercel.com</strong> conectando tu cuenta de GitHub.</li>
+                        <li>Importar el repositorio y presionar <code class="text-electric-cyan">Deploy</code>. Vercel genera la URL pública HTTPS instantáneamente.</li>
+                    </ol>
+                </div>
+
+                <!-- Resources -->
+                <div class="border-t border-gray-800 pt-4 text-xs text-gray-400 font-mono">
+                    <strong class="text-gray-300">Fuentes & Bibliografía:</strong>
+                    <a href="https://vercel.com/docs" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">Vercel Documentation</a> |
+                    <a href="https://www.cloudflare.com/learning/dns/what-is-dns/" target="_blank" rel="noopener" class="text-electric-cyan hover:underline ml-2">Cloudflare DNS Guide</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 07: CUESTIONARIO WEB INTERACTIVO   -->
+        <!-- ========================================== -->
+        <section id="tab-quiz" class="tab-content hidden space-y-8">
+            
+            <div class="cyber-glass p-6 sm:p-8 rounded-xl border border-acid-yellow/40 space-y-6">
+                <div class="flex items-center justify-between flex-wrap gap-4 border-b border-gray-800 pb-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-graduation-cap text-acid-yellow text-3xl"></i>
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-mono font-bold text-white">CUESTIONARIO WEB DE REPASO</h2>
+                            <p class="text-xs font-mono text-gray-400">Módulo de autoevaluación interactivo sobre JS, jQuery, JSON y Hosting</p>
+                        </div>
+                    </div>
+
+                    <div id="quiz-score-badge" class="px-4 py-2 rounded bg-acid-yellow/10 border border-acid-yellow text-acid-yellow font-mono text-sm font-bold">
+                        PUNTUAClÓN: <span id="quiz-score">0</span> / 8
+                    </div>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quiz-questions-container" class="space-y-6">
+                    <!-- Questions will be rendered dynamically via JavaScript for optimal interactivity -->
+                </div>
+
+                <!-- Final Quiz Results Card -->
+                <div id="quiz-result-card" class="hidden cyber-glass p-6 rounded-xl border border-neon-green text-center space-y-4">
+                    <div class="text-4xl text-neon-green"><i class="fa-solid fa-award"></i></div>
+                    <h3 class="text-2xl font-mono font-bold text-white" id="quiz-grade-title">¡EVALUACIÓN COMPLETADA!</h3>
+                    <p class="text-sm text-gray-300 font-mono" id="quiz-grade-desc">Has demostrado un conocimiento sólido de la infraestructura web.</p>
+                    <button onclick="resetQuiz()" class="px-6 py-2.5 rounded bg-acid-yellow text-black font-mono font-bold text-xs hover:bg-acid-yellow/80 transition">
+                        <i class="fa-solid fa-rotate-right"></i> REINTENTAR CUESTIONARIO
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="cyber-glass border-t border-electric-cyan/20 py-8 relative z-10 text-xs font-mono text-gray-400 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="text-white font-bold">CYBER ART COMMISSIONS</span> &copy; 2026 // TERMINAL DE ENCARGOS
+                <p class="text-gray-500 text-[10px]">Proyecto Desarrollado con HTML5, Tailwind CSS, JS Vanilla & jQuery</p>
+            </div>
+
+            <!-- GitHub & Vercel Quick Submission Box -->
+            <div class="flex items-center gap-4">
+                <a href="https://github.com" target="_blank" rel="noopener" class="px-3 py-1.5 rounded bg-deep-space border border-gray-700 hover:border-electric-cyan text-gray-300 flex items-center gap-2 transition">
+                    <i class="fa-brands fa-github text-white"></i> GitHub Repo
+                </a>
+                <a href="https://vercel.com" target="_blank" rel="noopener" class="px-3 py-1.5 rounded bg-deep-space border border-gray-700 hover:border-electric-cyan text-gray-300 flex items-center gap-2 transition">
+                    <i class="fa-solid fa-triangle-exclamation text-white"></i> Vercel App
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MAIN INTERACTIVE SCRIPT -->
+    <script>
+        /* ------------------------------------------------------------------ */
+        /* 1. SOUND FX ENGINE (Web Audio API - Retro Synth Clicks)            */
+        /* ------------------------------------------------------------------ */
+        let audioEnabled = true;
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function playSynthClick(freq = 440, type = 'sine', duration = 0.05) {
+            if (!audioEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new AudioCtx();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                // Audio context suppressed until user gesture
+            }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('sound-icon');
+            const btn = document.getElementById('sound-btn');
+            if (audioEnabled) {
+                icon.className = 'fa-solid fa-volume-high';
+                btn.classList.remove('border-red-500/40', 'text-red-400');
+                btn.classList.add('border-electric-cyan/40', 'text-electric-cyan');
+                playSynthClick(880, 'square');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark';
+                btn.classList.remove('border-electric-cyan/40', 'text-electric-cyan');
+                btn.classList.add('border-red-500/40', 'text-red-400');
+            }
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* 2. SPA TAB SWITCHING NAVIGATION SYSTEM                             */
+        /* ------------------------------------------------------------------ */
+        function switchTab(tabId) {
+            playSynthClick(587, 'triangle');
+            
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+
+            // Show selected tab content
+            const selectedTab = document.getElementById(`tab-${tabId}`);
+            if (selectedTab) {
+                selectedTab.classList.remove('hidden');
+            }
+
+            // Update navigation button active styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-electric-cyan', 'border-b-2', 'border-electric-cyan', 'bg-electric-cyan/10');
+                btn.classList.add('text-gray-400');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-electric-cyan', 'border-b-2', 'border-electric-cyan', 'bg-electric-cyan/10');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            playSynthClick(440, 'sine');
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* 3. INTERACTIVE PRICE CALCULATOR & TICKET GENERATOR                 */
+        /* ------------------------------------------------------------------ */
+        let currentCalcState = {
+            mode: 'rubber', // rubber ($25), anime ($40), cyber ($60)
+            format: 'headshot', // headshot ($0), half (+$15), full (+$30)
+        };
+
+        const MODE_PRICES = { rubber: 25, anime: 40, cyber: 60 };
+        const FORMAT_PRICES = { headshot: 0, half: 15, full: 30 };
+        const MODE_NAMES = { rubber: 'Rubber Hose (Retro 30s)', anime: 'Anime Clásico (90s)', cyber: 'Cyber Glow' };
+        const FORMAT_NAMES = { headshot: 'Headshot / Avatar', half: 'Half Body', full: 'Full Body' };
+
+        function updateCalc(type, val) {
+            playSynthClick(784, 'sine');
+            currentCalcState[type] = val;
+
+            // Highlight buttons
+            if (type === 'mode') {
+                document.querySelectorAll('.calc-mode-btn').forEach(b => {
+                    b.className = 'calc-mode-btn p-3 rounded border border-gray-700 bg-deep-space text-gray-400 font-mono text-xs';
+                });
+                const active = document.getElementById(`btn-mode-${val}`);
+                active.className = 'calc-mode-btn p-3 rounded border border-electric-cyan bg-electric-cyan/20 text-white font-bold font-mono text-xs';
+            }
+
+            if (type === 'format') {
+                document.querySelectorAll('.calc-format-btn').forEach(b => {
+                    b.className = 'calc-format-btn p-3 rounded border border-gray-700 bg-deep-space text-gray-400 font-mono text-xs';
+                });
+                const active = document.getElementById(`btn-format-${val}`);
+                active.className = 'calc-format-btn p-3 rounded border border-neon-magenta bg-neon-magenta/20 text-white font-bold font-mono text-xs';
+            }
+
+            calculateTotal();
+        }
+
+        function selectModeInCalc(modeKey) {
+            switchTab('modos');
+            updateCalc('mode', modeKey);
+            document.getElementById('calculator-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function calculateTotal() {
+            let basePrice = MODE_PRICES[currentCalcState.mode] + FORMAT_PRICES[currentCalcState.format];
+            
+            const hasBg = document.getElementById('extra-bg').checked;
+            const hasChar = document.getElementById('extra-char').checked;
+            const hasComm = document.getElementById('extra-commercial').checked;
+
+            let total = basePrice;
+            if (hasBg) total += 25;
+            if (hasChar) total += Math.round(basePrice * 0.7);
+            if (hasComm) total += 40;
+
+            document.getElementById('total-price').textContent = `$${total} USD`;
+            updateTicketText(total);
+        }
+
+        function updateTicketText(totalVal = 25) {
+            const nameInput = document.getElementById('client-name').value.trim() || 'Anon';
+            const hasBg = document.getElementById('extra-bg').checked ? 'Fondo Neón (+$25)' : null;
+            const hasChar = document.getElementById('extra-char').checked ? 'Personaje Extra (+70%)' : null;
+            const hasComm = document.getElementById('extra-commercial').checked ? 'Licencia Comercial (+$40)' : null;
+
+            const extrasList = [hasBg, hasChar, hasComm].filter(Boolean).join(', ') || 'Ninguno';
+
+            const ticketContent = `[ CYBER ART COMMISSIONS TICKET ]
+• Cliente / Nickname: ${nameInput}
+• Modo Seleccionado: ${MODE_NAMES[currentCalcState.mode]}
+• Formato Cobertura: ${FORMAT_NAMES[currentCalcState.format]}
+• Extras Incluidos: ${extrasList}
+• Total Estimado: $${totalVal} USD
+• Estado Ticket: LISTO PARA ENVIAR`;
+
+            document.getElementById('ticket-preview').textContent = ticketContent;
+        }
+
+        function copyTicket() {
+            playSynthClick(1046, 'square');
+            const textToCopy = document.getElementById('ticket-preview').textContent;
+            
+            // Clipboard fallback as specified
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const notif = document.getElementById('copy-notification');
+                notif.classList.remove('hidden');
+                setTimeout(() => notif.classList.add('hidden'), 3000);
+            } catch (err) {
+                console.error('Error al copiar ticket', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* 4. JAVASCRIPT & JQUERY INTERACTIVE DEMOS                           */
+        /* ------------------------------------------------------------------ */
+        let jsCount = 0;
+        function runJsDemo() {
+            playSynthClick(659, 'sawtooth');
+            jsCount++;
+            const display = document.getElementById('js-demo-counter');
+            display.textContent = `Cargas Neón: ${jsCount}`;
+            display.classList.add('scale-110');
+            setTimeout(() => display.classList.remove('scale-110'), 150);
+        }
+
+        // jQuery events on DOM ready
+        $(document).ready(function() {
+            $('#jq-fade-btn').on('click', function() {
+                playSynthClick(523, 'sine');
+                $('#jq-target-box').fadeToggle(300);
+            });
+
+            $('#jq-slide-btn').on('click', function() {
+                playSynthClick(698, 'sine');
+                $('#jq-target-box').slideToggle(300);
+            });
+        });
+
+        /* ------------------------------------------------------------------ */
+        /* 5. JSON PARSER DEMO TOOL                                          */
+        /* ------------------------------------------------------------------ */
+        function parseJsonDemo() {
+            playSynthClick(880, 'sine');
+            const inputVal = document.getElementById('json-input').value;
+            const outputDiv = document.getElementById('json-output');
+
+            try {
+                const parsedObj = JSON.parse(inputVal);
+                let html = `<span class="text-neon-green font-bold">✓ JSON VÁLIDO PARSEADO EN MEMORIA:</span><br><br>`;
+                for (let key in parsedObj) {
+                    html += `<span class="text-electric-cyan">${key}</span>: <span class="text-acid-yellow">${JSON.stringify(parsedObj[key])}</span><br>`;
+                }
+                outputDiv.innerHTML = html;
+            } catch (err) {
+                outputDiv.innerHTML = `<span class="text-red-400 font-bold">✗ ERROR DE SINTAXIS JSON:</span><br><span class="text-gray-400">${err.message}</span>`;
+            }
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* 6. DNS PROPAGATION FLOW VISUALIZER                                 */
+        /* ------------------------------------------------------------------ */
+        const DNS_STEPS = {
+            1: "<strong>Paso 1:</strong> El usuario escribe 'cyberartcomisiones.vercel.app' en el navegador. La solicitud verifica el caché local.",
+            2: "<strong>Paso 2:</strong> El ISP (Proveedor de Internet) consulta el Servidor DNS Recursivo para traducir el dominio a IP.",
+            3: "<strong>Paso 3:</strong> Los Servidores Raíz e IP de NameServers de Vercel responden con el registro A/CNAME oficial.",
+            4: "<strong>Paso 4:</strong> La dirección IP del Servidor CDN de Vercel es retornada y la web responde en milisegundos."
+        };
+
+        function stepDns(stepNum) {
+            playSynthClick(400 + (stepNum * 100), 'triangle');
+            document.getElementById('dns-explanation').innerHTML = DNS_STEPS[stepNum];
+
+            for (let i = 1; i <= 4; i++) {
+                const el = document.getElementById(`dns-step-${i}`);
+                if (i === stepNum) {
+                    el.className = 'p-3 rounded bg-electric-cyan/20 border border-electric-cyan text-white cursor-pointer font-bold';
+                } else {
+                    el.className = 'p-3 rounded bg-deep-space border border-gray-800 text-gray-400 cursor-pointer hover:bg-electric-cyan/10';
+                }
+            }
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* 7. CUESTIONARIO INTERACTIVO WEB ENGINE                             */
+        /* ------------------------------------------------------------------ */
+        const QUIZ_QUESTIONS = [
+            {
+                q: "1. ¿Cuál es el rol principal de JavaScript en la tríada del desarrollo web frente a HTML y CSS?",
+                options: [
+                    "A) Definir la estructura y etiquetas semánticas de la página.",
+                    "B) Proporcionar dinamismo, lógica de programación y manejo de eventos.",
+                    "C) Aplicar estilos visuales neón y tipografías responsive.",
+                    "D) Almacenar la base de datos de manera física en el servidor."
+                ],
+                correct: 1,
+                explanation: "JavaScript se encarga del comportamiento y la lógica interactiva del cliente."
+            },
+            {
+                q: "2. ¿Cómo se declara una variable constante inmutable en JS moderno (ES6)?",
+                options: ["A) var", "B) let", "C) const", "D) define"],
+                correct: 2,
+                explanation: "'const' permite crear variables cuyo identificador no puede ser reasignado."
+            },
+            {
+                q: "3. ¿Por qué nació históricamente la librería jQuery?",
+                options: [
+                    "A) Para reemplazar completamente a HTML en los servidores.",
+                    "B) Para simplificar la sintaxis del DOM y resolver inconsistencias entre navegadores.",
+                    "C) Para diseñar interfaces en 3D con WebGL.",
+                    "D) Para enviar correos electrónicos sin necesidad de servidor."
+                ],
+                correct: 1,
+                explanation: "jQuery abstrajo las diferencias de compatibilidad entre navegadores como IE y Firefox."
+            },
+            {
+                q: "4. ¿Cuál es la sintaxis selector básica de jQuery?",
+                options: ["A) select('selector')", "B) $('selector').accion()", "C) DOM.get('selector')", "D) #selector.run()"],
+                correct: 1,
+                explanation: "El símbolo '$' es el caracter principal para seleccionar nodos en jQuery."
+            },
+            {
+                q: "5. En JSON, ¿cuál es una regla obligatoria referente a las claves (keys)?",
+                options: [
+                    "A) No pueden contener números.",
+                    "B) Deben ir siempre encerradas entre comillas dobles (\"\").",
+                    "C) Deben escribirse en mayúsculas sostenidas.",
+                    "D) Deben ser variables globales de JavaScript."
+                ],
+                correct: 1,
+                explanation: "En la especificación JSON estricta, todas las claves deben usar comillas dobles."
+            },
+            {
+                q: "6. ¿Qué función nativa de JavaScript convierte un Objeto en una cadena formateada JSON?",
+                options: ["A) JSON.parse()", "B) JSON.stringify()", "C) Object.toJSON()", "D) String.fromJSON()"],
+                correct: 1,
+                explanation: "JSON.stringify() serializa objetos en cadenas de texto JSON."
+            },
+            {
+                q: "7. ¿Qué tipo de plataforma de despliegue es Vercel para proyectos web?",
+                options: [
+                    "A) Un servidor de base de datos SQL relacional.",
+                    "B) Una plataforma Cloud optimizada para hosting estático Jamstack y CI/CD desde GitHub.",
+                    "C) Un registrador privado de nombres de dominio .com únicamente.",
+                    "D) Un editor de imágenes cibernéticas en la nube."
+                ],
+                correct: 1,
+                explanation: "Vercel permite desplegar sitios estáticos y de frontend directamente sincronizados con GitHub."
+            },
+            {
+                q: "8. ¿Qué significa TLD en el contexto de un Nombre de Dominio Web?",
+                options: [
+                    "A) Technical Level Data",
+                    "B) Top-Level Domain (Dominio de Nivel Superior como .com, .net, .org)",
+                    "C) Terminal Logic Display",
+                    "D) Transfer Layer Device"
+                ],
+                correct: 1,
+                explanation: "TLD es la extensión final de un nombre de dominio (.com, .net, .app, etc.)."
+            }
+        ];
+
+        let userAnswers = {};
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = '';
+
+            QUIZ_QUESTIONS.forEach((qObj, qIdx) => {
+                const card = document.createElement('div');
+                card.className = 'cyber-glass p-5 rounded-lg border border-gray-800 space-y-3';
+                card.id = `q-card-${qIdx}`;
+
+                let optionsHtml = '';
+                qObj.options.forEach((opt, optIdx) => {
+                    optionsHtml += `
+                        <button onclick="selectQuizOption(${qIdx}, ${optIdx})" id="q-opt-${qIdx}-${optIdx}" class="q-opt-btn w-full text-left p-3 rounded bg-deep-space border border-gray-800 hover:border-electric-cyan font-mono text-xs text-gray-300 transition">
+                            ${opt}
+                        </button>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="font-mono font-bold text-sm text-white">${qObj.q}</div>
+                    <div class="space-y-2">${optionsHtml}</div>
+                    <div id="q-feedback-${qIdx}" class="hidden p-3 rounded font-mono text-xs mt-2"></div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function selectQuizOption(qIdx, optIdx) {
+            if (userAnswers[qIdx] !== undefined) return; // Prevent changing answer
+
+            playSynthClick(700, 'sine');
+            userAnswers[qIdx] = optIdx;
+
+            const qObj = QUIZ_QUESTIONS[qIdx];
+            const feedbackDiv = document.getElementById(`q-feedback-${qIdx}`);
+            feedbackDiv.classList.remove('hidden');
+
+            // Disable all options for this question
+            const card = document.getElementById(`q-card-${qIdx}`);
+            const buttons = card.querySelectorAll('.q-opt-btn');
+
+            buttons.forEach((btn, idx) => {
+                btn.onclick = null; // remove handler
+                if (idx === qObj.correct) {
+                    btn.className = 'q-opt-btn w-full text-left p-3 rounded bg-neon-green/20 border border-neon-green font-mono text-xs text-white font-bold';
+                } else if (idx === optIdx && optIdx !== qObj.correct) {
+                    btn.className = 'q-opt-btn w-full text-left p-3 rounded bg-red-500/20 border border-red-500 font-mono text-xs text-red-300';
+                } else {
+                    btn.className = 'q-opt-btn w-full text-left p-3 rounded bg-deep-space/50 border border-gray-800 font-mono text-xs text-gray-600';
+                }
+            });
+
+            if (optIdx === qObj.correct) {
+                feedbackDiv.className = 'p-3 rounded bg-neon-green/10 border border-neon-green text-neon-green font-mono text-xs';
+                feedbackDiv.innerHTML = `<strong>¡CORRECTO!</strong> ${qObj.explanation}`;
+            } else {
+                feedbackDiv.className = 'p-3 rounded bg-red-500/10 border border-red-500 text-red-400 font-mono text-xs';
+                feedbackDiv.innerHTML = `<strong>INCORRECTO.</strong> ${qObj.explanation}`;
+            }
+
+            updateScore();
+        }
+
+        function updateScore() {
+            let score = 0;
+            const answeredCount = Object.keys(userAnswers).length;
+
+            for (let qIdx in userAnswers) {
+                if (userAnswers[qIdx] === QUIZ_QUESTIONS[qIdx].correct) {
+                    score++;
+                }
+            }
+
+            document.getElementById('quiz-score').textContent = score;
+
+            if (answeredCount === QUIZ_QUESTIONS.length) {
+                const resultCard = document.getElementById('quiz-result-card');
+                resultCard.classList.remove('hidden');
+
+                const title = document.getElementById('quiz-grade-title');
+                const desc = document.getElementById('quiz-grade-desc');
+
+                if (score >= 7) {
+                    title.textContent = "GRADE S // CYBER ARCHITECT";
+                    desc.textContent = "¡Excelente! Has superado la autoevaluación con honores cibernéticos.";
+                } else if (score >= 5) {
+                    title.textContent = "GRADE A // WEB RUNNER";
+                    desc.textContent = "Buen trabajo. Tienes un dominio sólido de los conceptos clave.";
+                } else {
+                    title.textContent = "GRADE C // REVISIÓN REQUERIDA";
+                    desc.textContent = "Te sugerimos repasar las secciones de JS, jQuery y JSON en el menú superior.";
+                }
+
+                resultCard.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetQuiz() {
+            playSynthClick(440, 'square');
+            userAnswers = {};
+            document.getElementById('quiz-score').textContent = '0';
+            document.getElementById('quiz-result-card').classList.add('hidden');
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* 8. APPLICATION INITIALIZATION                                      */
+        /* ------------------------------------------------------------------ */
+        window.onload = function() {
+            // Initial calculations
+            calculateTotal();
+            renderQuiz();
+            
+            // Console Terminal Easter Egg
+            console.log("%c CYBER ART COMMISSIONS // TERMINAL ONLINE ", "background: #0A0012; color: #00F0FF; font-size: 14px; font-weight: bold; border: 1px solid #00F0FF; padding: 4px;");
+        };
+    </script>
+</body>
+</html>
